@@ -275,77 +275,48 @@ nav ul li a:hover {
         </ul>
     </nav>
 
-    <div class="header-section">
-        <h1>صالة عرض الشينوبي</h1>
-        <p>شاهد أقوى القتالات واللحظات التاريخية</p>
-    </div>
-
     <div class="video-grid">
-    <div class="video-item" onclick="openVideo('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI')">
-        <div class="thumbnail-container" style="background-image: url('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI');">
-            <div class="play-button">▶</div>
+        <div class="video-item" onclick="openVideo('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI')">
+            <div class="thumbnail-container" style="background-image: url('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI');">
+                <div class="play-button">▶</div>
+            </div>
+            <div class="video-info">
+                <span class="video-tag">قتال حماسي</span>
+                <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
+            </div>
         </div>
-        <div class="video-info">
-            <span class="video-tag">قتال حماسي</span>
-            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
-        </div>
-    </div>
 
-    <div class="video-item" onclick="openVideo('https://www.youtube.com/embed/eakW_OTQxIA')">
-        <div class="thumbnail-container" style="background-image: url('https://img.youtube.com/vi/eakW_OTQxIA/maxresdefault.jpg');">
-            <div class="play-button">▶</div>
-        </div>
-        <div class="video-info">
-            <span class="video-tag">فيلم</span>
-            <h3>فيلم ناروتو الأخير - The Last</h3>
-        </div>
-    </div>
-</div>
-        <div class="video-grid">
-    <div class="video-item" onclick="openVideo('https://www.youtube.com/embed/4t__wczfpRI')">
-        <div class="thumbnail-container" style="background-image: url('https://img.youtube.com/vi/4t__wczfpRI/maxresdefault.jpg');">
-            <div class="play-button">▶</div>
-        </div>
-        <div class="video-info">
-            <span class="video-tag">قتال حماسي</span>
-            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
+        <div class="video-item" onclick="openVideo('https://youtu.be/GhU9zplCMVI')">
+            <div class="thumbnail-container" style="background-image: url('https://youtu.be/GhU9zplCMVI');">
+                <div class="play-button">▶</div>
+            </div>
+            <div class="video-info">
+                <span class="video-tag">فيلم</span>
+                <h3>فيلم ناروتو الأخير - The Last</h3>
+            </div>
         </div>
     </div>
-
-    <div class="video-item" onclick="openVideo('https://www.youtube.com/embed/eakW_OTQxIA')">
-        <div class="thumbnail-container" style="background-image: url('https://img.youtube.com/vi/eakW_OTQxIA/maxresdefault.jpg');">
-            <div class="play-button">▶</div>
-        </div>
-        <div class="video-info">
-            <span class="video-tag">فيلم</span>
-            <h3>فيلم ناروتو الأخير - The Last</h3>
+    <div class="video-modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideo()">&times; إغلاق</span>
+            <iframe id="videoFrame" width="100%" height="450" src="" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
-</div>
-
-       <div class="video-grid">
-    <div class="video-item" onclick="openVideo('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI')">
-        <div class="thumbnail-container" style="background-image: url('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI');">
-            <div class="play-button">▶</div>
-        </div>
-        <div class="video-info">
-            <span class="video-tag">قتال حماسي</span>
-            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
-        </div>
-    </div>
-
-    <div class="video-item" onclick="openVideo('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI')">
-        <div class="thumbnail-container" style="background-image: url('https://youtu.be/Zb88oKrGFkI?list=RDZb88oKrGFkI');">
-            <div class="play-button">▶</div>
-        </div>
-        <div class="video-info">
-            <span class="video-tag">فيلم</span>
-            <h3>فيلم ناروتو الأخير - The Last</h3>
-        </div>
-    </div>
-</div>
 
     <script>
+        // وظيفة فتح الفيديو
+        function openVideo(url) {
+            document.getElementById('videoFrame').src = url;
+            document.getElementById('videoModal').style.display = "flex";
+        }
+
+        // وظيفة إغلاق الفيديو
+        function closeVideo() {
+            document.getElementById('videoModal').style.display = "none";
+            document.getElementById('videoFrame').src = ""; // لإيقاف الصوت عند الإغلاق
+        }
+
+        // وظيفة البحث (موجودة لديك وهي صحيحة)
         function searchFunction() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let items = document.querySelectorAll('.video-item');
