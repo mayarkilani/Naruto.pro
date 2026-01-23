@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض الفيديوهات - نينجا TV</title>
+    <style>
+        :root {
+            --orange: #FF6700;
+            --black: #0a0a0a;
+            --gray-card: #161616;
+            --white: #f5f5f5;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--orange);
+            padding-bottom: 20px;
+        }
+
+        .header-section h1 {
+            color: var(--orange);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+        }
+
+        /* شبكة الفيديوهات */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-item {
+            background: var(--gray-card);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.4s;
+            border: 1px solid #222;
+        }
+
+        .video-item:hover {
+            transform: scale(1.05);
+            border-color: var(--orange);
+            box-shadow: 0 0 15px rgba(255, 103, 0, 0.4);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* زر التشغيل في المنتصف */
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 103, 0, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .video-item:hover .play-button {
+            background: var(--orange);
+            width: 70px;
+            height: 70px;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-info h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .video-tag {
+            background: var(--orange);
+            color: black;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* المشغل المنبثق (Modal) */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 3px solid #FF6700; /* البرتقالي */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF6700;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #FF6700;
+    text-shadow: 0 0 8px #FF6700;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--orange);
+    border-radius: 20px;
+    padding: 5px 15px;
+    margin-right: 20px;
+}
+
+#searchInput {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    padding: 5px;
+    width: 150px;
+    transition: 0.3s;
+}
+
+#searchInput:focus {
+    width: 250px; /* يتوسع عند الضغط عليه */
+}
+
+.search-btn {
+    background: transparent;
+    border: none;
+    color: var(--orange);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+/* تنسيقات خاصة للهواتف (أصغر من 768 بكسل) */
+@media (max-width: 768px) {
+    /* تصغير حجم الخط في العناوين */
+    .page-header h1, .header-section h1 {
+        font-size: 1.8rem;
+    }
+
+    /* جعل القائمة العلوية مرنة */
+    nav {
+        padding: 10px 15px;
+        flex-direction: column; /* ترتيب الشعار والقائمة فوق بعضهما */
+        gap: 10px;
+    }
+
+    nav ul {
+        gap: 5px;
+    }
+
+    nav ul li {
+        margin: 0 5px;
+    }
+
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    /* شريط البحث في الهواتف */
+    .search-container {
+        margin-right: 0;
+        width: 100%;
+    }
+
+    #searchInput {
+        width: 100% !important; /* ملء العرض المتاح */
+    }
+
+    /* تعديل شبكة الأغاني والفيديوهات */
+    .songs-container, .video-grid {
+        grid-template-columns: 1fr; /* عرض عنصر واحد فقط في السطر */
+        padding: 10px 20px;
+    }
+
+    /* تصغير حجم بطاقة الفيديو في الجوال */
+    .modal-content {
+        width: 95%;
+    }
+    
+    #videoFrame {
+        height: 250px; /* تقليل الارتفاع ليناسب شاشة الهاتف */
+    }
+}
+    </style>
+</head>
+<body>
+   <body>
+    <nav>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="ابحث عن فيديو..." onkeyup="searchFunction()">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="logo">UZUMAKI PORTAL</div>
+        <ul>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="songs.html">الأغاني</a></li>
+            <li><a href="videos.html">الفيديوهات</a></li>
+            <li><a href="stories.html">القصص</a></li>
+            <li><a href="forum.html">المنتدى</a></li>
+        </ul>
+    </nav>
+
+    <div class="header-section">
+        <h1>صالة عرض الشينوبي</h1>
+        <p>شاهد أقوى القتالات واللحظات التاريخية</p>
+    </div>
+
+    <div class="video-grid">
+        
+        <div class="video-grid">
+    <div class="video-item">
+        <div class="video-wrapper">
+           <iframe width="855" height="481" src="https://www.youtube-nocookie.com/embed/Zb88oKrGFkI?list=RDZb88oKrGFkI" title="Kurama Rap Song | &quot;Nine Tails&quot; | SHWABADI [Naruto]" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</iframe>
+        <div class="video-info">
+            <span class="video-tag">قتال حماسي</span>
+            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
+        </div>
+    </div>
+
+    </div>
+        <div class="video-grid">
+    <div class="video-item">
+        <div class="video-wrapper">
+           <iframe 
+    width="100%" 
+    height="200" 
+    src="https://www.youtube-nocookie.com/embed/4t__wczfpRI" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+        </div>
+        <div class="video-info">
+            <span class="video-tag">قتال حماسي</span>
+            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
+        </div>
+    </div>
+
+    </div>
+
+       <div class="video-grid">
+    <div class="video-item">
+        <div class="video-wrapper">
+           <iframe 
+    width="100%" 
+    height="200" 
+    src="https://www.youtube-nocookie.com/embed/4t__wczfpRI" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+            <span class="video-tag">قتال حماسي</span>
+            <h3>ناروتو ضد ساسكي - المعركة النهائية</h3>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        function searchFunction() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.querySelectorAll('.video-item');
+            items.forEach(item => {
+                let text = item.querySelector('h3').innerText.toLowerCase();
+                if (text.includes(input)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+</body>
