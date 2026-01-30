@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألحان كونوها - أغاني ناروتو</title>
+    <title>ألحان الشينوبي - Uzumaki Portal</title>
     <style>
         :root {
             --orange: #FF6700;
@@ -17,9 +17,10 @@
             color: var(--white);
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding-bottom: 120px;
+            padding-bottom: 130px; /* مساحة للمشغل السفلي لكي لا يغطي المحتوى */
         }
 
+        /* القائمة العلوية */
         nav {
             display: flex;
             justify-content: space-between;
@@ -38,31 +39,10 @@
         nav ul li a { text-decoration: none; color: white; font-weight: bold; transition: 0.3s; }
         nav ul li a:hover { color: var(--orange); }
 
-        .search-container {
-            display: flex;
-            align-items: center;
-            background: #1a1a1a;
-            border: 1px solid var(--orange);
-            border-radius: 20px;
-            padding: 5px 15px;
-        }
+        .page-header { text-align: center; padding: 40px 20px; }
+        .page-header h1 { color: var(--orange); font-size: 2.5rem; }
 
-        #searchInput {
-            background: transparent;
-            border: none;
-            color: white;
-            outline: none;
-            width: 150px;
-        }
-
-        .page-header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(to bottom, #2c1a0a, var(--black));
-        }
-
-        .page-header h1 { color: var(--orange); font-size: 2.5rem; margin: 0; }
-
+        /* حاوية الأغاني */
         .songs-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -77,6 +57,7 @@
             border: 1px solid #333;
             transition: 0.3s;
             cursor: pointer;
+            text-align: center;
         }
 
         .song-card:hover { border-color: var(--orange); transform: translateY(-5px); }
@@ -86,11 +67,14 @@
             height: 160px;
             background-size: cover;
             background-position: center;
+            background-color: #222;
         }
 
-        .song-info { padding: 15px; text-align: center; }
-        .song-info h3 { margin: 10px 0 5px; color: var(--orange); }
+        .song-info { padding: 15px; }
+        .song-info h3 { color: var(--orange); margin: 5px 0; }
+        .song-info p { color: #ccc; font-size: 0.9rem; }
 
+        /* المشغل السفلي الثابت */
         .audio-player-fixed {
             position: fixed;
             bottom: 0;
@@ -98,34 +82,31 @@
             width: 100%;
             background: #1a1a1a;
             border-top: 3px solid var(--orange);
-            padding: 15px 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 2000;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
         }
 
-        #current-song-title { color: var(--orange); font-weight: bold; margin-bottom: 8px; }
+        #current-song-title { color: var(--orange); font-weight: bold; margin-bottom: 10px; }
 
         audio {
-            width: 70%;
-            height: 40px;
-            filter: sepia(100%) saturate(500%) hue-rotate(330deg);
+            width: 80%;
+            filter: sepia(100%) saturate(500%) hue-rotate(330deg); /* تلوين المشغل بالبرتقالي */
         }
 
         @media (max-width: 768px) {
             nav { flex-direction: column; padding: 10px; }
+            audio { width: 100%; }
             .songs-container { padding: 20px; }
-            audio { width: 95%; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ابحث عن أغنية..." onkeyup="searchFunction()">
-        </div>
         <div class="logo">UZUMAKI PORTAL</div>
         <ul>
             <li><a href="index.html">الرئيسية</a></li>
@@ -134,19 +115,20 @@
         </ul>
     </nav>
 
-    <header class="page-header">
-        <h1>مكتبة الألحان</h1>
-    </header>
+    <div class="page-header">
+        <h1>مكتبة الأغاني</h1>
+    </div>
 
     <div class="songs-container">
-        <div class="song-card" onclick="playMusic('https://docs.google.com/uc?export=open&id=1wPi9lBKvqzpV2k6i83QwWTzgoKfjRZQA', 'Blue Bird')">
+        <div class="song-card" onclick="playMusic('https://docs.google.com/uc?export=open&id=1wPi9lBKvqzpV2k6i83QwWTzgoKfjRZQA', 'Blue Bird - Naruto')">
             <div class="song-img" style="background-image: url('Naroto_photo/song1_thumb.jpg');"></div>
             <div class="song-info">
                 <h3>Blue Bird</h3>
                 <p>Naruto Shippuden OP 3</p>
             </div>
         </div>
-    </div>
+
+        </div>
 
     <div class="audio-player-fixed">
         <div id="current-song-title">اختر أغنية للاستماع</div>
@@ -156,23 +138,19 @@
     </div>
 
     <script>
+        // الجافا سكربت لتشغيل الأغنية المختارة في المشغل الثابت
         function playMusic(url, title) {
             const player = document.getElementById('main-audio-player');
             const titleDisplay = document.getElementById('current-song-title');
             
+            // تحديث الرابط وعنوان الأغنية
             player.src = url;
             titleDisplay.innerText = "يعمل الآن: " + title;
+            
+            // بدء التشغيل فوراً
             player.play();
         }
-
-        function searchFunction() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.querySelectorAll('.song-card');
-            cards.forEach(card => {
-                let title = card.querySelector('h3').innerText.toLowerCase();
-                card.style.display = title.includes(input) ? "" : "none";
-            });
-        }
     </script>
+
 </body>
 </html>
