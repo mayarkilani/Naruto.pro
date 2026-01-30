@@ -120,8 +120,10 @@
     </div>
 
     <div class="songs-container">
-<div class="song-card" onclick="playMusic('https://docs.google.com/uc?export=open&id=1wPi9lBKvqzpV2k6i83QwWTzgoKfjRZQA', 'Blue Bird')">
-            <div class="song-img" style="background-image: url('Naroto_photo/song1_thumb.jpg');"></div>
+<div class="song-card" onclick="playMusic('https://docs.google.com/uc?export=open&id=1ebTsrrKiAtHxM5Q0AboLcy04C0hCJnHj','Blue Bird')">
+            <div class="song-img" style="background-image: url('Naroto_photo/song1_thumb.jpg');">
+
+            </div>
             <div class="song-info">
                 <h3>Blue Bird</h3>
                 <p>Naruto Shippuden OP 3</p>
@@ -142,14 +144,17 @@
     const player = document.getElementById('main-audio-player');
     const titleDisplay = document.getElementById('current-song-title');
     
-    // تحديث العنوان والرابط
-    titleDisplay.innerText = "يعمل الآن: " + title;
+    titleDisplay.innerText = "جاري التحميل: " + title;
     player.src = url;
     
-    // أمر إجباري للمتصفح لتحميل الملف ثم تشغيله
-    player.load(); 
-    player.play().catch(error => {
-        console.log("فشل التشغيل التلقائي، اضغط على زر التشغيل في المشغل السفلي");
+    player.load(); // تحميل الملف
+    
+    // محاولة التشغيل مع كشف الخطأ
+    player.play().then(() => {
+        titleDisplay.innerText = "يعمل الآن: " + title;
+    }).catch(error => {
+        console.error("خطأ في التشغيل:", error);
+        titleDisplay.innerText = "خطأ: اضغط على زر Play في الأسفل يدوياً";
     });
 }
     </script>
