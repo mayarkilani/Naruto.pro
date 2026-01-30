@@ -138,18 +138,20 @@
     </div>
 
     <script>
-        // الجافا سكربت لتشغيل الأغنية المختارة في المشغل الثابت
-        function playMusic(url, title) {
-            const player = document.getElementById('main-audio-player');
-            const titleDisplay = document.getElementById('current-song-title');
-            
-            // تحديث الرابط وعنوان الأغنية
-            player.src = url;
-            titleDisplay.innerText = "يعمل الآن: " + title;
-            
-            // بدء التشغيل فوراً
-            player.play();
-        }
+    function playMusic(url, title) {
+    const player = document.getElementById('main-audio-player');
+    const titleDisplay = document.getElementById('current-song-title');
+    
+    // تحديث العنوان والرابط
+    titleDisplay.innerText = "يعمل الآن: " + title;
+    player.src = url;
+    
+    // أمر إجباري للمتصفح لتحميل الملف ثم تشغيله
+    player.load(); 
+    player.play().catch(error => {
+        console.log("فشل التشغيل التلقائي، اضغط على زر التشغيل في المشغل السفلي");
+    });
+}
     </script>
 
 </body>
